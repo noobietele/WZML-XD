@@ -364,7 +364,7 @@ class TaskListener(TaskConfig):
                 pmsg += "〶 <b><u>Action Performed :</u></b>\n"
                 pmsg += "⋗ <i>File(s) have been sent to User PM</i>\n\n"
                 if self.is_super_chat:
-                    await send_message(self.message, msg)
+                    await send_message(self.message, pmsg)
             if not files and not self.is_super_chat:
                 await send_message(self.message, msg)
             else:
@@ -374,6 +374,20 @@ class TaskListener(TaskConfig):
                 for index, (link, name) in enumerate(files.items(), start=1):
                     chat_id, msg_id = link.split("/")[-2:]
                     fmsg += f"{index}. <a href='{link}'>{name}</a>"
+                    if Config.MEDIA_STORE and (
+                        self.is_super_chat or Config.LEECH_DUMP_CHAT
+                    ):
+                        if chat_id.isdigit():
+                            chat_id = f"-100{chat_id}"
+                        flink = f"https://t.me/{TgClient.BNAME}?start={encode_slink('file' + chat_id + '&&' + msg_id)}"
+                        fmsg += f"\n┖ <b>Get Media</b> → <a href='{flink}'>Store Link</a> | <a href='https://t.me/share/url?url={flink}'>Share Link</a>"
+                    fmsg += "\n"
+                    if len(fmsg.encode() + msg.encode()) > 4000:
+                        await send_message(log_chat, msg + fmsg)
+                        await sleep(1)
+                        fmsg = ""
+                if fmsg != "":
+                    await send_message(log_chat, msg + fmsg)
         else:
             msg += f"\n╰ <b>Type</b> → {mime_type}"
             if mime_type == "Folder":
