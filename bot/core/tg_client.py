@@ -74,7 +74,7 @@ class TgClient:
         await cls.bot.start()
         cls.BNAME = cls.bot.me.username
         cls.ID = Config.BOT_TOKEN.split(":", 1)[0]
-        LOGGER.info(f"Beast : [@{cls.BNAME}] Started!")
+        LOGGER.info(f"Bot Started!")
 
     @classmethod
     async def start_user(cls):
@@ -92,7 +92,7 @@ class TgClient:
                 if cls.IS_PREMIUM_USER:
                     cls.MAX_SPLIT_SIZE = 4194304000
                 uname = cls.user.me.username or cls.user.me.first_name
-                LOGGER.info(f"Beast User : [{uname}] Started!")
+                LOGGER.info(f"Premium User Started!")
             except Exception as e:
                 LOGGER.error(f"Failed to start client from USER_SESSION_STRING. {e}")
                 cls.IS_PREMIUM_USER = False
