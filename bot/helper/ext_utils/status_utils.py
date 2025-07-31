@@ -221,7 +221,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
 
     bot_header = Config.CUSTOM_BOT_HEADER or "Downloader Zone"
     bot_header_link = Config.CUSTOM_BOT_HEADER_LINK or "https://t.me/DownloaderZoneGateway"
-    msg += f"<blockquote><b><i><a href='{bot_header_link}'>Powered By {bot_header}</a></i></b>\n\n</blockquote>"
+   # msg += f"<blockquote><b><i><a href='{bot_header_link}'>Powered By {bot_header}</a></i></b>\n\n</blockquote>"
 
     tasks = await get_specific_tasks(status, sid if is_user else None)
 
