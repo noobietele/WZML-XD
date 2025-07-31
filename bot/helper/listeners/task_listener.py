@@ -363,8 +363,8 @@ class TaskListener(TaskConfig):
                 pmsg = msg
                 pmsg += "〶 <b><u>Action Performed :</u></b>\n"
                 pmsg += "⋗ <i>File(s) have been sent to User PM</i>\n\n"
-                if self.is_super_chat:
-                    await send_message(self.message, pmsg)
+            if self.is_super_chat:
+                await send_message(self.message, pmsg)
             elif not files and not self.is_super_chat:
                 await send_message(self.message, msg)
             else:
