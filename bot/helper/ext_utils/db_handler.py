@@ -2,7 +2,7 @@ from importlib import import_module
 
 from aiofiles import open as aiopen
 from aiofiles.os import path as aiopath
-from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo import AsyncMongoClient
 from pymongo.errors import PyMongoError
 from pymongo.server_api import ServerApi
 
@@ -21,7 +21,7 @@ class DbManager:
         try:
             if self._conn is not None:
                 await self._conn.close()
-            self._conn = AsyncIOMotorClient(
+            self._conn = AsyncMongoClient(
                 Config.DATABASE_URL, server_api=ServerApi("1")
             )
             self.db = self._conn.beast
@@ -95,15 +95,6 @@ class DbManager:
             await self.db.settings.files.update_one(
                 {"_id": TgClient.ID}, {"$unset": {db_path: ""}}, upsert=True
             )
-
-    async def update_nzb_config(self):
-        if self._return:
-            return
-        async with aiopen("sabnzbd/SABnzbd.ini", "rb+") as pf:
-            nzb_conf = await pf.read()
-        await self.db.settings.nzb.replace_one(
-            {"_id": TgClient.ID}, {"SABnzbd__ini": nzb_conf}, upsert=True
-        )
 
     async def update_user_data(self, user_id):
         if self._return:
